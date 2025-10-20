@@ -10,11 +10,17 @@
     "preview": "vite preview"
   },
   "overrides": {
-    "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@^21.5.1",
-    "vscode": "npm:@codingame/monaco-vscode-extension-api@^21.5.1"
+    "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@^22.1.0",
+    "vscode": "npm:@codingame/monaco-vscode-extension-api@^22.1.0"
   },
   "dependencies": {
-    "@codingame/monaco-vscode-standalone-languages": "^21.5.1",
+    "@codingame/monaco-vscode-issue-service-override": "^22.1.0",
+    "@codingame/monaco-vscode-json-default-extension": "^22.1.0",
+    "@codingame/monaco-vscode-json-language-features-default-extension": "^22.1.0",
+    "@codingame/monaco-vscode-language-detection-worker-service-override": "^22.1.0",
+    "@codingame/monaco-vscode-markers-service-override": "^22.1.0",
+    "@codingame/monaco-vscode-standalone-json-language-features": "^22.1.0",
+    "@codingame/monaco-vscode-standalone-languages": "^22.1.0",
     "@graphiql/plugin-doc-explorer": "^0.4.1",
     "@graphiql/plugin-explorer": "^5.1.1",
     "@graphiql/plugin-history": "^0.4.1",
@@ -28,7 +34,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "vite-plugin-monaco-editor-esm": "^2.0.2",
-    "vscode": "npm:@codingame/monaco-vscode-extension-api@^21.5.1"
+    "vscode": "npm:@codingame/monaco-vscode-extension-api@^22.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
