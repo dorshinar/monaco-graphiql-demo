@@ -1,0 +1,48 @@
+diff --git a/node_modules/@codingame/monaco-vscode-api/workers/editor.worker.js b/node_modules/@codingame/monaco-vscode-api/workers/editor.worker.js
+index fb99bea..8073b8c 100644
+--- a/node_modules/@codingame/monaco-vscode-api/workers/editor.worker.js
++++ b/node_modules/@codingame/monaco-vscode-api/workers/editor.worker.js
+@@ -1,25 +1,26 @@
+-
+ import '../vscode/src/vs/editor/common/services/editorWebWorkerMain.js';
+ import { start } from '../vscode/src/vs/editor/editor.worker.start.js';
+ 
+-let initialized = false;
+-function isWorkerInitialized() {
+-    return initialized;
+-}
+ function initialize(createFn) {
+-    initialized = true;
+-    self.onmessage = (m) => {
+-        start((ctx) => {
+-            return createFn(ctx, m.data);
++    start((context) => {
++        let requestHandler;
++        return new Proxy({}, {
++            get(_target, propKey) {
++                if (propKey === '$initialize') {
++                    return async (data) => {
++                        if (!requestHandler) {
++                            requestHandler = createFn(context, data);
++                        }
++                    };
++                }
++                const value = requestHandler?.[propKey];
++                if (typeof value === 'function') {
++                    return value.bind(requestHandler);
++                }
++                return value;
++            }
+         });
+-    };
++    });
+ }
+-self.onmessage = () => {
+-    if (!isWorkerInitialized()) {
+-        start(() => {
+-            return {};
+-        });
+-    }
+-};
+ 
+ export { initialize };
