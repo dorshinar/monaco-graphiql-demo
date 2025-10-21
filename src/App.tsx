@@ -72,6 +72,9 @@ import { createGraphiQLFetcher } from "@graphiql/toolkit";
 import "graphiql/style.css";
 import { explorerPlugin } from "@graphiql/plugin-explorer";
 import { HISTORY_PLUGIN } from "@graphiql/plugin-history";
+import { useGraphiQL, GraphiQLProvider } from "@graphiql/react";
+import { useState, useEffect } from "react";
+import { URI } from "monaco-editor/esm/vs/base/common/uri";
 
 const fetcher = createGraphiQLFetcher({
   url: "https://graphql.pokeapi.co/v1beta2",
@@ -79,6 +82,49 @@ const fetcher = createGraphiQLFetcher({
 const DEFAULT_PLUGINS = [HISTORY_PLUGIN, explorerPlugin()];
 
 function App() {
+  return (
+    <GraphiQLProvider fetcher={fetcher}>
+      <Inner />
+    </GraphiQLProvider>
+  );
+}
+
+function Inner() {
+  const uriInstanceId = useGraphiQL((state) => state.uriInstanceId);
+  const initialVariables = useGraphiQL((state) => state.initialVariables);
+  const initialQuery = useGraphiQL((state) => state.initialQuery);
+
+  const [modelCreated, setModelCreated] = useState(false);
+
+  useEffect(() => {
+    if (!monaco) {
+      return;
+    }
+    (async () => {
+      const variablesUri = URI.file(`${uriInstanceId}variables.json`);
+      const variablesModel = monaco.editor.getModel(variablesUri);
+
+      if (!variablesModel) {
+        await monaco.editor.createModelReference(
+          variablesUri,
+          initialVariables
+        );
+      }
+
+      const operationUri = URI.file(`${uriInstanceId}operation.graphql`);
+      const operationModel = monaco.editor.getModel(operationUri);
+
+      if (!operationModel) {
+        await monaco.editor.createModelReference(operationUri, initialQuery);
+      }
+
+      setModelCreated(true);
+    })();
+  }, [uriInstanceId, initialVariables, initialQuery]);
+
+  if (!modelCreated) {
+    return null;
+  }
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       <GraphiQL fetcher={fetcher} plugins={DEFAULT_PLUGINS} />;
