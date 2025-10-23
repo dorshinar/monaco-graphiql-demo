@@ -17,7 +17,8 @@
     "monaco-languageclient": "^10.2.0",
     "prettier": "^3.6.2",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "vscode": "npm:@codingame/monaco-vscode-extension-api@^22.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
