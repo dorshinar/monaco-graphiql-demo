@@ -7,11 +7,16 @@ export default defineConfig({
   plugins: [
     react(),
     monacoEditorPlugin({
-      languageWorkers: ["editorWorkerService", "json"],
+      languageWorkers: ["editorWorkerService"],
       customWorkers: [
         {
           label: "graphql",
           entry: "monaco-graphql/esm/graphql.worker.js",
+        },
+        {
+          label: "json",
+          entry:
+            "@codingame/monaco-vscode-standalone-json-language-features/worker.js",
         },
       ],
       forceBuildCDN: true,
